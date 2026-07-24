@@ -1,0 +1,13 @@
+{
+  "name": "sicu-jinhakpro-alert",
+  "version": "1.0.0",
+  "private": true,
+  "description": "진학프로에서 서울시립대학교 즉시지원 채용 공고를 수집해 보여주는 페이지",
+  "scripts": {
+    "scrape": "node scraper/scrape.js",
+    "serve": "node scraper/serve.js"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0"
+  }
+}
