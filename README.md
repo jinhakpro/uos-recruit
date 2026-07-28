@@ -14,8 +14,9 @@ public/index.html         - 운영 사이트 기준 화면
 public/alpha.html         - 알파(테스트) 사이트 기준 화면
 public/app.js             - data/*.json 을 읽어 목록 렌더링 (body[data-source] 로 파일 선택)
 public/style.css          - 서울시립대학교(UOS) 브랜드 컬러 적용 스타일
-data/postings.json        - 운영 사이트 수집 결과 (gitignore 대상, 실행 시 생성됨)
-data/postings.alpha.json  - 알파 사이트 수집 결과 (gitignore 대상, 실행 시 생성됨)
+data/postings.json        - 운영 사이트 수집 결과 (GitHub Actions가 주기적으로 커밋)
+data/postings.alpha.json  - 알파 사이트 수집 결과 (GitHub Actions가 주기적으로 커밋)
+.github/workflows/scrape.yml - 15분마다 두 사이트를 수집해 결과를 저장소에 커밋하는 워크플로
 PRD.md                    - 기획서
 ```
 
@@ -42,24 +43,25 @@ JINHAKPRO_BASE=https://www-alpha.jinhakpro.com JINHAKPRO_OUTPUT=postings.alpha.j
 - 운영 페이지: http://localhost:5173/public/index.html
 - 알파 페이지: http://localhost:5173/public/alpha.html
 
-## 자동 갱신 (Windows 작업 스케줄러)
-Windows 작업 스케줄러에 아래 3개 작업을 등록해 사용 중입니다 (경로는 실제 프로젝트 위치로 지정).
-- `scraper/run_scrape.bat` — 운영 사이트 수집, 10분 간격
-- `scraper/scrape_alpha.bat` — 알파 사이트 수집, 10분 간격
-- `scraper/ensure_server.bat` — 서버가 꺼져 있으면 재기동, 10분 간격
+## 자동 갱신 (GitHub Actions, 클라우드)
+`.github/workflows/scrape.yml` 워크플로가 15분마다 GitHub의 서버에서 실행되어
+운영/알파 사이트를 수집하고, 결과가 바뀌면 `data/postings.json`, `data/postings.alpha.json`을
+저장소에 자동으로 커밋·푸시합니다. 개인 PC를 켜둘 필요가 없습니다.
+- 수동 실행: GitHub 저장소 → Actions 탭 → "서울시립대학교 즉시지원 공고 수집" → Run workflow
+- GitHub Actions의 `schedule` cron은 트래픽이 몰리면 몇 분 지연될 수 있습니다(정확히 15분마다 보장되지는 않음).
+
+## 페이지 배포 (Vercel 등 정적 호스팅)
+`public/`은 정적 파일만으로 동작하므로 Vercel, Netlify, GitHub Pages 등에 저장소를 연결하면
+별도 서버 없이 접속 가능한 URL이 생깁니다. `data/*.json`을 GitHub Actions가 계속 갱신해주므로
+페이지는 항상 최신 데이터를 보여줍니다.
+
+## (참고) 로컬 PC에서 직접 돌리던 방식
+과거에는 Windows 작업 스케줄러(`scraper/run_scrape.bat`, `scraper/scrape_alpha.bat`,
+`scraper/ensure_server.bat`)로 개인 PC에서 수집·서빙했으나, 클라우드(GitHub Actions + 정적 호스팅)로
+이전하면서 더 이상 사용하지 않습니다. 로컬에서 테스트하고 싶을 때만 아래처럼 실행하면 됩니다.
 
 `.bat` 파일은 Node.js 설치 경로(`C:\Program Files\nodejs\node.exe`)를 하드코딩하고 있으므로,
 다른 PC에서 그대로 쓰려면 해당 경로를 실제 설치 위치에 맞게 수정해야 합니다.
-
-## 다른 PC(같은 네트워크)에서 접속하기
-`scraper/serve.js` 는 `0.0.0.0`(모든 인터페이스)에서 수신하므로, 같은 사내망/공유기에 연결된
-다른 PC에서는 `http://<이 PC의 사설 IP>:5173/public/index.html` 로 접속할 수 있습니다.
-단, Windows 방화벽에서 5173/TCP 인바운드를 허용해야 합니다 (관리자 권한 필요):
-```powershell
-New-NetFirewallRule -DisplayName "Sicu Jinhakpro Page (5173)" -Direction Inbound -Protocol TCP -LocalPort 5173 -Action Allow -Profile Any
-```
-사설 IP이므로 외부 인터넷이나 다른 네트워크에서는 접속할 수 없습니다. 그 경우에는 별도의
-서버/클라우드 호스팅에 배포해야 합니다.
 
 ## 참고
 - 사이트 구조가 바뀌면 `scraper/scrape.js` 의 선택자(`.card_recr_tit`, `img[alt]` 등)를 다시 확인해야 합니다.
