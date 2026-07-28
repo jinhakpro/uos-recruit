@@ -40,8 +40,8 @@ npm run serve      # http://localhost:5173 로 페이지 확인
 JINHAKPRO_BASE=https://www-alpha.jinhakpro.com JINHAKPRO_OUTPUT=postings.alpha.json node scraper/scrape.js
 ```
 
-- 운영 페이지: http://localhost:5173/public/index.html
-- 알파 페이지: http://localhost:5173/public/alpha.html
+- 운영 페이지: http://localhost:5173/
+- 알파 페이지: http://localhost:5173/alpha.html
 
 ## 자동 갱신 (GitHub Actions, 클라우드)
 `.github/workflows/scrape.yml` 워크플로가 15분마다 GitHub의 서버에서 실행되어
@@ -50,10 +50,15 @@ JINHAKPRO_BASE=https://www-alpha.jinhakpro.com JINHAKPRO_OUTPUT=postings.alpha.j
 - 수동 실행: GitHub 저장소 → Actions 탭 → "서울시립대학교 즉시지원 공고 수집" → Run workflow
 - GitHub Actions의 `schedule` cron은 트래픽이 몰리면 몇 분 지연될 수 있습니다(정확히 15분마다 보장되지는 않음).
 
-## 페이지 배포 (Vercel 등 정적 호스팅)
-`public/`은 정적 파일만으로 동작하므로 Vercel, Netlify, GitHub Pages 등에 저장소를 연결하면
-별도 서버 없이 접속 가능한 URL이 생깁니다. `data/*.json`을 GitHub Actions가 계속 갱신해주므로
-페이지는 항상 최신 데이터를 보여줍니다.
+## 페이지 배포 (GitHub Pages)
+`.github/workflows/deploy-pages.yml` 워크플로가 `public/*`와 `data/*.json`을 합쳐
+GitHub Pages로 배포합니다. `main`에 관련 변경이 푸시될 때(또는 수집 워크플로가 데이터를
+커밋할 때) 자동 실행됩니다.
+
+- 배포 URL: **https://jinhakpro.github.io/uos-recruit/** (운영)
+- 알파 페이지: **https://jinhakpro.github.io/uos-recruit/alpha.html**
+
+리포지토리 Settings → Pages 에서 Source가 "GitHub Actions"로 설정되어 있어야 합니다.
 
 ## (참고) 로컬 PC에서 직접 돌리던 방식
 과거에는 Windows 작업 스케줄러(`scraper/run_scrape.bat`, `scraper/scrape_alpha.bat`,

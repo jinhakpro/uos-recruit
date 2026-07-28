@@ -4,7 +4,7 @@ async function loadPostings() {
   const dataFile = document.body.dataset.source || 'postings.json';
 
   try {
-    const res = await fetch(`/data/${dataFile}`, { cache: 'no-store' });
+    const res = await fetch(`data/${dataFile}`, { cache: 'no-store' });
     if (!res.ok) throw new Error(`데이터 조회 실패 (HTTP ${res.status})`);
     const data = await res.json();
 
