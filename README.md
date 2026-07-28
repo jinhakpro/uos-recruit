@@ -44,11 +44,11 @@ JINHAKPRO_BASE=https://www-alpha.jinhakpro.com JINHAKPRO_OUTPUT=postings.alpha.j
 - 알파 페이지: http://localhost:5173/alpha.html
 
 ## 자동 갱신 (GitHub Actions, 클라우드)
-`.github/workflows/scrape.yml` 워크플로가 15분마다 GitHub의 서버에서 실행되어
+`.github/workflows/scrape.yml` 워크플로가 매시 1분, 31분에 GitHub의 서버에서 실행되어
 운영/알파 사이트를 수집하고, 결과가 바뀌면 `data/postings.json`, `data/postings.alpha.json`을
 저장소에 자동으로 커밋·푸시합니다. 개인 PC를 켜둘 필요가 없습니다.
 - 수동 실행: GitHub 저장소 → Actions 탭 → "서울시립대학교 즉시지원 공고 수집" → Run workflow
-- GitHub Actions의 `schedule` cron은 트래픽이 몰리면 몇 분 지연될 수 있습니다(정확히 15분마다 보장되지는 않음).
+- GitHub Actions의 `schedule` cron은 트래픽이 몰리면 몇 분 지연될 수 있습니다(정확히 매시 1분/31분에 보장되지는 않음).
 
 ## 페이지 배포 (GitHub Pages)
 `.github/workflows/deploy-pages.yml` 워크플로가 `public/*`와 `data/*.json`을 합쳐

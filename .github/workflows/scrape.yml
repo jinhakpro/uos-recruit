@@ -2,7 +2,7 @@ name: 서울시립대학교 즉시지원 공고 수집
 
 on:
   schedule:
-    - cron: '*/15 * * * *'
+    - cron: '1,31 * * * *'
   workflow_dispatch:
 
 permissions:
