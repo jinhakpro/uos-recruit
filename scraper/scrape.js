@@ -16,7 +16,12 @@ const USER_AGENT =
 
 async function fetchHtml(url) {
   const res = await fetch(url, {
-    headers: { 'User-Agent': USER_AGENT },
+    headers: {
+      'User-Agent': USER_AGENT,
+      Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+      'Accept-Language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7',
+      Referer: BASE_URL + '/',
+    },
   });
   if (!res.ok) {
     throw new Error(`요청 실패: HTTP ${res.status} (${url})`);
