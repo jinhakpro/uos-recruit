@@ -1,162 +1,232 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;900&display=swap');
 
 :root {
   color-scheme: light dark;
   --uos-navy: #0d3b7a;
-  --uos-navy-dark: #082a58;
+  --uos-navy-light: #1e56a8;
   --uos-orange: #ff6600;
-  --bg: #f4f5ef;
-  --border: #e3e3dc;
-  --muted: #6b6f78;
-  --text: #1b2331;
+  --bg: #f6f7fb;
+  --surface: #ffffff;
+  --border: #e6e8f0;
+  --muted: #6b7280;
+  --text: #111827;
+  --shadow: 0 1px 2px rgba(17, 24, 39, 0.04), 0 8px 24px -12px rgba(17, 24, 39, 0.12);
+  --shadow-hover: 0 4px 10px rgba(17, 24, 39, 0.06), 0 16px 32px -12px rgba(17, 24, 39, 0.16);
 }
 
 * { box-sizing: border-box; }
 
 body {
   margin: 0;
-  font-family: 'Noto Sans KR', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+  font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Malgun Gothic', sans-serif;
   background: var(--bg);
   color: var(--text);
+  -webkit-font-smoothing: antialiased;
 }
 
 .topbar {
-  background: var(--uos-navy);
-  background-image: linear-gradient(120deg, var(--uos-navy) 0%, var(--uos-navy-dark) 100%);
-  border-bottom: 3px solid var(--uos-orange);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
 }
 
 .topbar-inner {
-  max-width: 720px;
+  max-width: 760px;
   margin: 0 auto;
-  padding: 14px 20px;
+  padding: 16px 24px;
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
 .topbar .emblem {
-  height: 24px;
-  padding: 0 8px;
-  border-radius: 5px;
-  background: var(--uos-orange);
+  height: 26px;
+  padding: 0 9px;
+  border-radius: 8px;
+  background: var(--uos-navy);
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 900;
+  font-weight: 800;
   font-size: 0.75rem;
   letter-spacing: 0.03em;
   flex-shrink: 0;
 }
 
 .topbar .school {
-  color: #fff;
+  color: var(--text);
   font-weight: 700;
   font-size: 0.95rem;
-  letter-spacing: 0.01em;
+  letter-spacing: -0.01em;
 }
 
 .wrap {
-  max-width: 720px;
+  max-width: 760px;
   margin: 0 auto;
-  padding: 32px 20px 64px;
+  padding: 48px 24px 72px;
 }
 
 .env-badge {
-  display: inline-block;
-  margin: 0 0 10px;
-  padding: 3px 12px;
-  background: #fff4e6;
+  display: inline-flex;
+  align-items: center;
+  margin: 0 0 14px;
+  padding: 4px 12px;
+  background: #fff4e9;
   color: var(--uos-orange);
-  border: 1px solid #ffd7ad;
+  border: 1px solid #ffdcb8;
   border-radius: 999px;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.03em;
 }
 
 header h1 {
-  font-size: 1.5rem;
-  font-weight: 900;
-  margin: 0 0 8px;
-  color: var(--uos-navy);
+  font-size: 1.85rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0 0 10px;
+  color: var(--text);
 }
 
 header .desc {
   margin: 0;
   color: var(--muted);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
 }
 
 header .updated {
-  margin: 6px 0 28px;
+  margin: 10px 0 32px;
   color: var(--muted);
   font-size: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+header .updated::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #22c55e;
+  display: inline-block;
 }
 
 .list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 
 .card {
-  background: #fff;
+  background: var(--surface);
   border: 1px solid var(--border);
-  border-left: 4px solid var(--uos-navy);
-  border-radius: 10px;
-  padding: 16px 18px;
+  border-radius: 16px;
+  padding: 20px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  box-shadow: 0 1px 3px rgba(13, 59, 122, 0.06);
+  gap: 20px;
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.18s ease, transform 0.18s ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-1px);
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
 }
 
 .card .title {
-  font-size: 1rem;
+  font-size: 1.02rem;
   font-weight: 700;
-  line-height: 1.4;
+  line-height: 1.45;
   color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+.card .period {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--muted);
+  width: fit-content;
+}
+
+.card .period-label {
+  padding: 2px 8px;
+  background: #eef2ff;
+  color: var(--uos-navy-light);
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.72rem;
 }
 
 .card a.link-btn {
   flex-shrink: 0;
-  display: inline-block;
-  padding: 8px 16px;
-  background: var(--uos-orange);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  background: var(--uos-navy);
   color: #fff;
   text-decoration: none;
-  border-radius: 6px;
+  border-radius: 10px;
   font-size: 0.85rem;
   font-weight: 700;
   white-space: nowrap;
-  transition: background 0.15s ease;
+  transition: background 0.15s ease, transform 0.15s ease;
 }
 
 .card a.link-btn:hover {
-  background: #e65c00;
+  background: var(--uos-navy-light);
+  transform: translateY(-1px);
+}
+
+.card a.link-btn::after {
+  content: '→';
+  font-size: 0.9rem;
 }
 
 .empty, .loading, .error {
   color: var(--muted);
-  background: #fff;
-  border: 1px dashed var(--border);
-  border-radius: 10px;
-  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 40px 24px;
   text-align: center;
+  box-shadow: var(--shadow);
 }
 
-.error { color: #b91c1c; }
+.error { color: #dc2626; }
+
+@media (max-width: 480px) {
+  .card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .card a.link-btn {
+    justify-content: center;
+  }
+}
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #10151f;
-    --border: #2a3242;
+    --bg: #0b0e14;
+    --surface: #141821;
+    --border: #232838;
     --muted: #9aa3b5;
     --text: #eef1f6;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -12px rgba(0, 0, 0, 0.5);
+    --shadow-hover: 0 4px 10px rgba(0, 0, 0, 0.3), 0 16px 32px -12px rgba(0, 0, 0, 0.6);
   }
-  .card { background: #171e2b; }
-  .empty, .loading, .error { background: #171e2b; }
+  .card .period-label { background: #1c2740; }
 }

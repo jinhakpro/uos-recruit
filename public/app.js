@@ -20,7 +20,14 @@ async function loadPostings() {
       .map(
         (item) => `
       <article class="card">
-        <span class="title">${escapeHtml(item.title)}</span>
+        <div class="card-body">
+          <span class="title">${escapeHtml(item.title)}</span>
+          ${
+            item.applyPeriod
+              ? `<span class="period"><span class="period-label">접수기간</span>${escapeHtml(item.applyPeriod)}</span>`
+              : ''
+          }
+        </div>
         <a class="link-btn" href="${item.url}" target="_blank" rel="noopener noreferrer">바로가기</a>
       </article>
     `

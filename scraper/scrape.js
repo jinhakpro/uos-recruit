@@ -11,17 +11,36 @@ const TARGET_INSTITUTION = '서울시립대학교';
 // JINHAKPRO_OUTPUT 환경변수로 저장 파일명을 바꿀 수 있다 (알파용 postings.alpha.json 등).
 const OUTPUT_PATH = path.join(__dirname, '..', 'data', process.env.JINHAKPRO_OUTPUT || 'postings.json');
 
-async function fetchListHtml() {
-  const res = await fetch(LIST_URL, {
-    headers: {
-      'User-Agent':
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36',
-    },
+const USER_AGENT =
+  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36';
+
+async function fetchHtml(url) {
+  const res = await fetch(url, {
+    headers: { 'User-Agent': USER_AGENT },
   });
   if (!res.ok) {
-    throw new Error(`진학프로 목록 조회 실패: HTTP ${res.status}`);
+    throw new Error(`요청 실패: HTTP ${res.status} (${url})`);
   }
   return res.text();
+}
+
+async function fetchListHtml() {
+  return fetchHtml(LIST_URL);
+}
+
+async function fetchApplyPeriod(detailUrl) {
+  const html = await fetchHtml(detailUrl);
+  const $ = cheerio.load(html);
+  let applyPeriod = '';
+
+  $('.recr_info_list li').each((_, el) => {
+    const label = $(el).find('.ts').first().text().trim();
+    if (label === '접수 기간') {
+      applyPeriod = $(el).find('.info').first().text().trim();
+    }
+  });
+
+  return applyPeriod;
 }
 
 function parsePostings(html) {
@@ -53,6 +72,15 @@ async function main() {
   const html = await fetchListHtml();
   const allImmediateApply = parsePostings(html);
   const matched = allImmediateApply.filter((p) => p.institution.includes(TARGET_INSTITUTION));
+
+  for (const posting of matched) {
+    try {
+      posting.applyPeriod = await fetchApplyPeriod(posting.url);
+    } catch (err) {
+      console.error(`접수기간 조회 실패 (${posting.url}): ${err.message}`);
+      posting.applyPeriod = '';
+    }
+  }
 
   const output = {
     updatedAt: new Date().toISOString(),
