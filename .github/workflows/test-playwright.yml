@@ -1,0 +1,42 @@
+name: (임시) Playwright 우회 테스트
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Playwright
+        run: |
+          npm init -y
+          npm install playwright
+          npx playwright install --with-deps chromium
+
+      - name: Test fetch via headless browser
+        run: |
+          node -e "
+          const { chromium } = require('playwright');
+          (async () => {
+            const browser = await chromium.launch();
+            const context = await browser.newContext({
+              userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36'
+            });
+            const page = await context.newPage();
+            const res = await page.goto('https://www.jinhakpro.com/recruit/list?isOnlyOnlineApply=true', { waitUntil: 'networkidle', timeout: 30000 });
+            console.log('STATUS:', res.status());
+            console.log('TITLE:', await page.title());
+            const bodyText = await page.content();
+            console.log('CONTAINS_TARGET:', bodyText.includes('서울시립대학교'));
+            console.log('BODY_SNIPPET:', bodyText.slice(0, 300));
+            await browser.close();
+          })();
+          "
