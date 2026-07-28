@@ -49,6 +49,7 @@ JINHAKPRO_BASE=https://www-alpha.jinhakpro.com JINHAKPRO_OUTPUT=postings.alpha.j
 저장소에 자동으로 커밋·푸시합니다. 개인 PC를 켜둘 필요가 없습니다.
 - 수동 실행: GitHub 저장소 → Actions 탭 → "서울시립대학교 즉시지원 공고 수집" → Run workflow
 - GitHub Actions의 `schedule` cron은 트래픽이 몰리면 몇 분 지연될 수 있습니다(정확히 매시 1분/31분에 보장되지는 않음).
+- `.github/workflows/scrape-alpha-test.yml` — 알파 사이트만 매시 33분에 추가로 한 번 더 수집 (알파 테스트 확인용).
 
 ## 페이지 배포 (GitHub Pages)
 `.github/workflows/deploy-pages.yml` 워크플로가 `public/*`와 `data/*.json`을 합쳐
