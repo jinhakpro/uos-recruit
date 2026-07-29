@@ -5,7 +5,6 @@ on:
     branches: [main]
     paths:
       - 'public/**'
-      - 'data/**'
       - '.github/workflows/deploy-pages.yml'
   workflow_dispatch:
 
@@ -30,9 +29,8 @@ jobs:
 
       - name: 배포용 디렉터리 구성
         run: |
-          mkdir -p site/data
+          mkdir -p site
           cp -r public/* site/
-          cp data/*.json site/data/
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

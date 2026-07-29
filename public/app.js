@@ -1,10 +1,12 @@
+const VALTOWN_DATA_ENDPOINT = 'https://jinhakproscrap--f623e5748aea11f1961f1607ee4eb77e.web.val.run';
+
 async function loadPostings() {
   const listEl = document.getElementById('list');
   const updatedEl = document.getElementById('updated');
   const dataFile = document.body.dataset.source || 'postings.json';
 
   try {
-    const res = await fetch(`data/${dataFile}`, { cache: 'no-store' });
+    const res = await fetch(`${VALTOWN_DATA_ENDPOINT}?key=${encodeURIComponent(dataFile)}`, { cache: 'no-store' });
     if (!res.ok) throw new Error(`데이터 조회 실패 (HTTP ${res.status})`);
     const data = await res.json();
 
